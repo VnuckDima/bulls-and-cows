@@ -1,4 +1,4 @@
-import { Base, GuessResult } from "./types";
+import { Base, GameState, GuessEntry, GuessResult, ScoreEntry } from "./types";
 
 const BASE_DIGITS: Record<Base, string> = {
   bin: "01",
@@ -74,4 +74,67 @@ export function countPossibleSecrets(length: number, base: Base): number {
   const result = helper(length, numericBase);
   possibleSecretsMemo.set(key, result);
   return result;
+}
+export function makeEntry(guess: string, secret: string): GuessEntry {
+  const { bulls, cows } = evaluateGuess(secret, guess);
+  return { guess, bulls, cows };
+}
+
+export function addGuess(state: GameState, guess: string): GameState {
+  const entry = makeEntry(guess, state.secret);
+  return {
+    ...state,
+    history: [...state.history, entry],
+    attempts: state.attempts + 1,
+    status: entry.bulls === state.length ? "won" : state.status,
+  };
+}
+
+export function startGame(length: number, base: Base, random: (min?: number, max?: number) => number): GameState {
+  return {
+    secret: generateSecret(length, base, random),
+    length,
+    base,
+    history: [],
+    status: "playing",
+    attempts: 0,
+    startTime: Date.now(),
+  };
+}
+
+export function getScoreKey(entry: ScoreEntry): string {
+  return `${entry.length}-${entry.base}`;
+}
+
+export function loadScores(): ScoreEntry[] {
+  try {
+    const raw = localStorage.getItem("bullsAndCowsScores");
+    if (!raw) return [];
+    return JSON.parse(raw) as ScoreEntry[];
+  } catch {
+    return [];
+  }
+}
+
+export function saveScores(scores: ScoreEntry[]): void {
+  localStorage.setItem("bullsAndCowsScores", JSON.stringify(scores));
+}
+
+export function addScore(entry: ScoreEntry): ScoreEntry[] {
+  const scores = loadScores();
+  const next = [...scores, entry];
+  next.sort((a, b) => {
+    if (a.attempts !== b.attempts) return a.attempts - b.attempts;
+    return a.time - b.time;
+  });
+  const top = next.slice(0, 10);
+  saveScores(top);
+  return top;
+}
+
+export function formatTime(ms: number): string {
+  const totalSec = Math.floor(ms / 1000);
+  const min = Math.floor(totalSec / 60);
+  const sec = totalSec % 60;
+  return `${min.toString().padStart(2, "0")}:${sec.toString().padStart(2, "0")}`;
 }
