@@ -46,3 +46,7 @@ export function evaluateGuess(secret: string, guess: string): GuessResult {
 
   return { bulls, cows };
 }
+export function createDigitValidator(base: Base): (char: string) => boolean {
+  const digits = getDigits(base).toLowerCase();
+  return (char: string) => digits.includes(char.toLowerCase());
+}
