@@ -50,3 +50,10 @@ export function createDigitValidator(base: Base): (char: string) => boolean {
   const digits = getDigits(base).toLowerCase();
   return (char: string) => digits.includes(char.toLowerCase());
 }
+export function isValidGuess(guess: string, length: number, base: Base): boolean {
+  if (guess.length !== length) return false;
+  const validator = createDigitValidator(base);
+  const lowered = guess.toLowerCase().split("");
+  if (lowered.some((ch) => !validator(ch))) return false;
+  return new Set(lowered).size === lowered.length;
+}
