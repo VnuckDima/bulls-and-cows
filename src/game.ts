@@ -1,4 +1,4 @@
-import { Base } from "./types";
+import { Base, GuessResult } from "./types";
 
 const BASE_DIGITS: Record<Base, string> = {
   bin: "01",
@@ -24,4 +24,25 @@ export function generateSecret(
     return pick(next, [...acc, remaining[idx]]);
   };
   return pick(digits, []);
+}
+export function evaluateGuess(secret: string, guess: string): GuessResult {
+  const s = secret.toLowerCase();
+  const g = guess.toLowerCase();
+  const secretChars = s.split("");
+  const guessChars = g.split("");
+
+  const bulls = secretChars.reduce((acc, ch, i) => (ch === guessChars[i] ? acc + 1 : acc), 0);
+
+  const unmatchedSecret = secretChars.filter((ch, i) => ch !== guessChars[i]);
+  const unmatchedGuess = guessChars.filter((ch, i) => ch !== secretChars[i]);
+
+  const remaining = unmatchedGuess.reduce((pool, ch) => {
+    const idx = pool.indexOf(ch);
+    if (idx === -1) return pool;
+    return [...pool.slice(0, idx), ...pool.slice(idx + 1)];
+  }, unmatchedSecret);
+
+  const cows = unmatchedSecret.length - remaining.length;
+
+  return { bulls, cows };
 }
