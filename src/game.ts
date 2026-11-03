@@ -63,17 +63,18 @@ export function getBaseValue(base: Base): number {
 
 const possibleSecretsMemo = new Map<string, number>();
 
-export function countPossibleSecrets(length: number, base: Base): number {
-  const key = `${length}-${base}`;
-  if (possibleSecretsMemo.has(key)) return possibleSecretsMemo.get(key)!;
-  const numericBase = getBaseValue(base);
-  const helper = (n: number, k: number): number => {
-    if (n <= 0) return 1;
-    return k * helper(n - 1, k - 1);
-  };
-  const result = helper(length, numericBase);
-  possibleSecretsMemo.set(key, result);
-  return result;
+export function countPossibleSecrets(length: number, base: Base): number;
+export function countPossibleSecrets(length: number, base: number): number;
+export function countPossibleSecrets(length: number, base: Base | number): number {
+  if (typeof base === "string") {
+    const key = `${length}-${base}`;
+    if (possibleSecretsMemo.has(key)) return possibleSecretsMemo.get(key)!;
+    const result = countPossibleSecrets(length, getBaseValue(base));
+    possibleSecretsMemo.set(key, result);
+    return result;
+  }
+  if (length <= 0) return 1;
+  return base * countPossibleSecrets(length - 1, base - 1);
 }
 export function makeEntry(guess: string, secret: string): GuessEntry {
   const { bulls, cows } = evaluateGuess(secret, guess);
