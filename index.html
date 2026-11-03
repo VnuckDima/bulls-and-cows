@@ -6,9 +6,9 @@
     <title>Bulls and Cows</title>
     <style>
       :root {
-        --bg: #1a1a2e;
-        --panel: #16213e;
-        --accent: #0f3460;
+        --bg: #111827;
+        --panel: #1f2937;
+        --accent: #374151;
         --text: #eaeaea;
         --muted: #8a8aa0;
         --bull: #e94560;
@@ -19,7 +19,7 @@
       body {
         margin: 0;
         font-family: system-ui, sans-serif;
-        background: var(--bg);
+        background: linear-gradient(135deg, #1f2937, #111827);
         color: var(--text);
         display: flex;
         justify-content: center;
@@ -33,7 +33,7 @@
         padding: 16px;
         margin-bottom: 16px;
       }
-      .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+      .row { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; }
       label { display: flex; flex-direction: column; font-size: 14px; color: var(--muted); gap: 4px; }
       select, input, button {
         padding: 8px 12px;
@@ -64,6 +64,7 @@
       .scoreboard td { text-align: left; }
       .message { text-align: center; font-size: 18px; margin: 12px 0; }
       .won { color: var(--good); font-weight: 600; }
+    .row button { white-space: nowrap; min-width: 80px; }
     </style>
   </head>
   <body>
