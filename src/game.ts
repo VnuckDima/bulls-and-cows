@@ -57,3 +57,21 @@ export function isValidGuess(guess: string, length: number, base: Base): boolean
   if (lowered.some((ch) => !validator(ch))) return false;
   return new Set(lowered).size === lowered.length;
 }
+export function getBaseValue(base: Base): number {
+  return getDigits(base).length;
+}
+
+const possibleSecretsMemo = new Map<string, number>();
+
+export function countPossibleSecrets(length: number, base: Base): number {
+  const key = `${length}-${base}`;
+  if (possibleSecretsMemo.has(key)) return possibleSecretsMemo.get(key)!;
+  const numericBase = getBaseValue(base);
+  const helper = (n: number, k: number): number => {
+    if (n <= 0) return 1;
+    return k * helper(n - 1, k - 1);
+  };
+  const result = helper(length, numericBase);
+  possibleSecretsMemo.set(key, result);
+  return result;
+}
