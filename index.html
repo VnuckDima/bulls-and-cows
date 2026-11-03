@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bulls and Cows</title>
+    <style>
+      :root {
+        --bg: #111827;
+        --panel: #1f2937;
+        --accent: #374151;
+        --text: #eaeaea;
+        --muted: #8a8aa0;
+        --bull: #e94560;
+        --cow: #f5a623;
+        --good: #16c79a;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: system-ui, sans-serif;
+        background: linear-gradient(135deg, #1f2937, #111827);
+        color: var(--text);
+        display: flex;
+        justify-content: center;
+        padding: 20px;
+      }
+      #app { width: 100%; max-width: 720px; }
+      h1 { text-align: center; margin: 0 0 16px; }
+      .card {
+        background: var(--panel);
+        border-radius: 10px;
+        padding: 16px;
+        margin-bottom: 16px;
+      }
+      .row { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; }
+      label { display: flex; flex-direction: column; font-size: 14px; color: var(--muted); gap: 4px; }
+      select, input, button {
+        padding: 8px 12px;
+        border-radius: 6px;
+        border: 1px solid var(--accent);
+        background: var(--accent);
+        color: var(--text);
+        font-size: 15px;
+      }
+      input { flex: 1; min-width: 120px; }
+      button {
+        cursor: pointer;
+        background: var(--accent);
+        border: 1px solid var(--accent);
+        color: var(--text);
+      }
+      button:hover { filter: brightness(1.15); }
+      button:disabled { opacity: 0.5; cursor: not-allowed; }
+      .hidden { display: none; }
+      table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+      th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--accent); }
+      th { color: var(--muted); font-weight: 600; }
+      .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 12px; font-weight: 600; }
+      .badge-bulls { background: var(--bull); color: #fff; }
+      .badge-cows { background: var(--cow); color: #000; }
+      .scoreboard { font-size: 14px; }
+      .scoreboard th { text-align: left; }
+      .scoreboard td { text-align: left; }
+      .message { text-align: center; font-size: 18px; margin: 12px 0; }
+      .won { color: var(--good); font-weight: 600; }
+    .row button { white-space: nowrap; min-width: 80px; }
+    </style>
+  </head>
+  <body>
+    <script type="module" src="/src/app.ts"></script>
+  </body>
+</html>
